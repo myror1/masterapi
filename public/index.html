@@ -1,0 +1,55 @@
+﻿
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Adding Terminals</title>
+    <style type="text/css" media="screen">
+      html, body {
+        background-color: #4B7399;
+        font-family: Verdana, Helvetica, Arial;
+        font-size: 14px;
+      }
+      a { color: #0000FF; }
+
+      #container {
+        width: 75%;
+        margin: 0 auto;
+        background-color: #FFF;
+        padding: 20px 40px;
+        border: solid 1px black;
+        margin-top: 20px;
+      }
+    </style>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript" charset="utf-8">
+      $(function() {
+        function addTask(terminal) {
+          $('#tasks').append('<li>' + terminal.name + '</ul>');
+        }
+
+        $('#new_task').submit(function(e) {
+          $.post('/api/terminals', $(this).serialize(), addTask);
+          this.reset();
+          e.preventDefault();
+        });
+
+        $.getJSON('/api/terminals', function(terminals) {
+          $.each(terminals, function() { addTask(this); });
+        });
+      });
+    </script>
+  <body>
+    <div id="container">
+      <h1>Add Terminals</h1>
+      <form id="new_task">
+        Name :<input type="text" name="terminal[name]" id="task_name"> <br />
+        Description<input type="text" name="terminal[description]" id="task_name"> <br />
+        Attributes: <input type="text" name="terminal[attr_keys]" id="task_name"><br />
+        <input type="submit" value="Add">
+      </form>
+      <ul id="tasks"></ul>
+    </div>
+  </body>
+</html>
+
